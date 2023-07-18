@@ -9,11 +9,7 @@ struct Args {
 }
 
 fn main() {
-    let args = Args::parse();
-
-    let result = hex::decode(args.hex);
-
-    let result = match result {
+    let result = match hex::decode(Args::parse().hex) {
         Err(e) => {
             println!("Error decoding hex string: {:?}", e);
             return;
