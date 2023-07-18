@@ -6,3 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+hex = "*"
+tag_length_value_stream = { git = "https://github.com/andy31415/rs_tag_lenght_value_stream.git" }
+
+[dependencies.clap]
+version = "4.3.16"
+features = ["color", "derive", "env", "string", "suggestions"]
