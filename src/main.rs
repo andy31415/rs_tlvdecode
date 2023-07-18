@@ -1,5 +1,4 @@
 use clap::Parser;
-use hex;
 use tag_length_value_stream::{Parser as TlvParser, Record, Value};
 
 #[derive(Parser, Debug)]
@@ -52,9 +51,7 @@ fn main() {
                 value: Value::ContainerEnd
             }
         ) {
-            if indent > 0 {
-                indent -= 1;
-            }
+            indent = indent.saturating_sub(1);
         }
     }
 
