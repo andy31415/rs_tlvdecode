@@ -1,5 +1,5 @@
 use clap::Parser;
-use tag_length_value_stream::{Parser as TlvParser, Record, Value};
+use tag_length_value_stream::{Parser as TlvParser, Value};
 
 #[derive(Parser, Debug)]
 #[command(version)]
@@ -33,24 +33,13 @@ fn main() {
             Some(value) => value,
         };
 
-        if matches!(
-            item,
-            Record {
-                tag: _,
-                value: Value::ContainerStart(_)
-            }
-        ) {
+        if matches!(item.value, Value::ContainerStart(_)) {
             indent += 1;
         }
+
         println!("{:indent$}{:?}", "", item, indent = (indent * 2));
 
-        if matches!(
-            item,
-            Record {
-                tag: _,
-                value: Value::ContainerEnd
-            }
-        ) {
+        if item.value == Value::ContainerEnd {
             indent = indent.saturating_sub(1);
         }
     }
