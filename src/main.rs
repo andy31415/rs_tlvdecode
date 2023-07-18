@@ -14,11 +14,11 @@ fn main() {
 
     let result = hex::decode(args.hex);
 
-    let result = match result  {
+    let result = match result {
         Err(e) => {
             println!("Error decoding hex string: {:?}", e);
             return;
-        },
+        }
         Ok(v) => v,
     };
 
@@ -29,13 +29,27 @@ fn main() {
     let mut indent = 0;
 
     for item in parser {
-        if matches!(item, Record {tag: _, value: Value::ContainerStart(_)}) { 
+        if matches!(
+            item,
+            Record {
+                tag: _,
+                value: Value::ContainerStart(_)
+            }
+        ) {
             indent += 1;
         }
-        println!("{:indent$}{:?}", "", item, indent=(indent * 2));
+        println!("{:indent$}{:?}", "", item, indent = (indent * 2));
 
-        if matches!(item, Record {tag: _, value: Value::ContainerEnd}) { 
-            indent -= 1;
+        if matches!(
+            item,
+            Record {
+                tag: _,
+                value: Value::ContainerEnd
+            }
+        ) {
+            if (indent > 0) {
+                indent -= 1;
+            }
         }
     }
 
