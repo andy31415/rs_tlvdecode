@@ -22,13 +22,18 @@ fn main() {
         Ok(v) => v,
     };
 
-    let parser = TlvParser::new(result.as_slice());
+    let mut parser = TlvParser::new(result.as_slice());
 
     println!("===================== DECODED ITEMS =========================");
 
     let mut indent = 0;
 
-    for item in parser {
+    loop {
+        let item = match parser.next() {
+            None => break,
+            Some(value) => value,
+        };
+
         if matches!(
             item,
             Record {
@@ -47,10 +52,14 @@ fn main() {
                 value: Value::ContainerEnd
             }
         ) {
-            if (indent > 0) {
+            if indent > 0 {
                 indent -= 1;
             }
         }
+    }
+
+    if !parser.done() {
+        println!("!!!! INCOMPLETE DATA !!!!");
     }
 
     println!("=========================== END =============================");
