@@ -1,5 +1,5 @@
 use clap::Parser;
-use tag_length_value_stream::{Parser as TlvParser, Value, ParseResult};
+use tag_length_value_stream::{ParseResult, Parser as TlvParser, Value};
 
 #[derive(Parser, Debug)]
 #[command(version)]
@@ -29,8 +29,8 @@ fn main() {
             Some(ParseResult::Record(value)) => value,
             Some(ParseResult::Error(e)) => {
                 println!("!!!! Parsing  error: {:?} !!!!", e);
-                break
-            },
+                break;
+            }
         };
 
         if matches!(item.value, Value::ContainerStart(_)) {
