@@ -27,8 +27,8 @@ fn main() {
         let item = match parser.next() {
             None => break,
             Some(ParseResult::Record(value)) => value,
-            Some(ParseResult::Error) => {
-                println!("!!!! Parsing  error !!!!");
+            Some(ParseResult::Error(e)) => {
+                println!("!!!! Parsing  error: {:?} !!!!", e);
                 break
             },
         };
@@ -42,10 +42,6 @@ fn main() {
         if item.value == Value::ContainerEnd {
             indent = indent.saturating_sub(1);
         }
-    }
-
-    if !parser.done() {
-        println!("!!!! INCOMPLETE DATA !!!!");
     }
 
     println!("=========================== END =============================");
