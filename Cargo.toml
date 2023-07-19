@@ -10,5 +10,5 @@ hex = "*"
 tag_length_value_stream = { git = "https://github.com/andy31415/rs_tag_lenght_value_stream.git" }
 
 [dependencies.clap]
-version = "4.3.16"
+version = "4.1.4"
 features = ["color", "derive", "env", "string", "suggestions"]

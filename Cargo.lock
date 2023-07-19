@@ -240,8 +240,8 @@ dependencies = [
 
 [[package]]
 name = "tag_length_value_stream"
-version = "0.1.0"
-source = "git+https://github.com/andy31415/rs_tag_lenght_value_stream.git#e3885a21365196979dada3fcd1b878cb689e9584"
+version = "0.2.0"
+source = "git+https://github.com/andy31415/rs_tag_lenght_value_stream.git#19ce98ed32fd0f248f1ec008214b30942bcd72e7"
 dependencies = [
  "byteorder",
  "streaming-iterator",
