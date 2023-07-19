@@ -1,5 +1,5 @@
 use clap::Parser;
-use tag_length_value_stream::{ParseResult, Parser as TlvParser, Value};
+use tag_length_value_stream::{ParseResult, Parser as TlvParser, Value, Record};
 
 #[derive(Parser, Debug)]
 #[command(version)]
@@ -17,29 +17,23 @@ fn main() {
         Ok(v) => v,
     };
 
-    let mut parser = TlvParser::new(result.as_slice());
 
     println!("===================== DECODED ITEMS =========================");
 
     let mut indent = 0;
-
-    loop {
-        let item = match parser.next() {
-            None => break,
-            Some(ParseResult::Record(value)) => value,
-            Some(ParseResult::Error(e)) => {
-                println!("!!!! Parsing  error: {:?} !!!!", e);
-                break;
-            }
-        };
-
-        if matches!(item.value, Value::ContainerStart(_)) {
+    
+    for item in TlvParser::new(result.as_slice()) {
+        if matches!(item, ParseResult::Record(Record {tag: _, value: Value::ContainerStart(_)})) {
             indent += 1;
         }
+        
+        match item {
+            ParseResult::Record(r) => println!("{:indent$}{:?}", "", r, indent = (indent * 2)),
+            ParseResult::Error(e) => println!("!!!! PARSE ERROR: {:?}", e),
+        }
 
-        println!("{:indent$}{:?}", "", item, indent = (indent * 2));
 
-        if item.value == Value::ContainerEnd {
+        if matches!(item, ParseResult::Record(Record {tag: _, value: Value::ContainerEnd})) {
             indent = indent.saturating_sub(1);
         }
     }
